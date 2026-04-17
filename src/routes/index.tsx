@@ -29,16 +29,66 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const orgLd = {
+    "@context": "https://schema.org",
+    "@type": "GeneralContractor",
+    name: "Jaffa Group",
+    description: "Luxury custom home builder and design-build firm in Park City, Utah.",
+    url: "https://jaffagroup.com",
+    telephone: "+1-435-555-0142",
+    email: "hello@jaffagroup.com",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "1750 Park Avenue",
+      addressLocality: "Park City",
+      addressRegion: "UT",
+      postalCode: "84060",
+      addressCountry: "US",
+    },
+    areaServed: ["Park City", "Deer Valley", "Promontory", "Tuhaye", "Victory Ranch"],
+  };
+
   return (
     <SiteShell>
       <Hero />
       <FeaturedStrip />
+      <Trust />
       <Ethos />
       <ServicesSummary />
       <Process />
       <Testimonial />
       <FinalCTA />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(orgLd) }}
+      />
     </SiteShell>
+  );
+}
+
+function Trust() {
+  const items = [
+    { v: "16", l: "Years in Park City" },
+    { v: "60+", l: "Homes Delivered" },
+    { v: "12", l: "In-House Craftsmen" },
+    { v: "100%", l: "Repeat or Referred" },
+  ];
+  return (
+    <section className="bg-mist py-16 lg:py-24 border-y border-border">
+      <div className="container-editorial">
+        <p className="eyebrow">Trust</p>
+        <div className="mt-10 grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+          {items.map((i) => (
+            <div key={i.l} className="border-t border-foreground/15 pt-6">
+              <p className="font-serif text-5xl lg:text-6xl text-gold">{i.v}</p>
+              <p className="mt-3 font-sans text-xs uppercase tracking-[0.25em] text-muted-foreground">
+                {i.l}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
