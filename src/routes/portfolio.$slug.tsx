@@ -1,6 +1,8 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useState } from "react";
+import { ArrowLeft, ArrowRight, Maximize2 } from "lucide-react";
 import { SiteShell } from "@/components/site/SiteShell";
+import { Lightbox } from "@/components/site/Lightbox";
 import { getProject, projects, type Project } from "@/lib/projects";
 
 export const Route = createFileRoute("/portfolio/$slug")({
@@ -40,6 +42,16 @@ export const Route = createFileRoute("/portfolio/$slug")({
 function ProjectPage() {
   const { project } = Route.useLoaderData() as { project: Project };
   const related = projects.filter((p) => p.slug !== project.slug).slice(0, 3);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  const projectLd = {
+    "@context": "https://schema.org",
+    "@type": "Residence",
+    name: project.title,
+    description: project.blurb,
+    image: project.hero,
+    address: { "@type": "PostalAddress", addressLocality: project.location },
+  };
 
   return (
     <SiteShell>
@@ -121,6 +133,15 @@ function ProjectPage() {
 
       {/* Gallery */}
       <section className="bg-background pb-24 lg:pb-36">
+        <div className="container-editorial flex items-end justify-between mb-8">
+          <p className="eyebrow">Gallery</p>
+          <button
+            onClick={() => setLightboxIndex(0)}
+            className="inline-flex items-center gap-2 font-sans text-xs uppercase tracking-[0.22em] text-muted-foreground hover:text-gold transition-colors"
+          >
+            <Maximize2 className="h-4 w-4" /> View fullscreen
+          </button>
+        </div>
         <div className="container-editorial grid gap-6 md:grid-cols-12">
           {project.gallery.map((src, i) => {
             const layout = [
@@ -130,14 +151,22 @@ function ProjectPage() {
               "md:col-span-12 aspect-[16/8]",
             ][i % 4];
             return (
-              <div key={i} className={`relative overflow-hidden bg-mist ${layout}`}>
+              <button
+                key={i}
+                onClick={() => setLightboxIndex(i)}
+                aria-label={`Open image ${i + 1} in fullscreen`}
+                className={`group relative overflow-hidden bg-mist ${layout}`}
+              >
                 <img
                   src={src}
                   alt={`${project.title} — image ${i + 1}`}
                   loading="lazy"
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-[1.03]"
                 />
-              </div>
+                <div className="absolute inset-0 bg-ink/0 group-hover:bg-ink/15 transition-colors duration-500 flex items-center justify-center">
+                  <Maximize2 className="h-7 w-7 text-bone opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
+              </button>
             );
           })}
         </div>
@@ -197,6 +226,21 @@ function ProjectPage() {
           </div>
         </div>
       </section>
+
+      {lightboxIndex !== null && (
+        <Lightbox
+          images={project.gallery}
+          startIndex={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+          alt={project.title}
+        />
+      )}
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(projectLd) }}
+      />
     </SiteShell>
   );
 }
+

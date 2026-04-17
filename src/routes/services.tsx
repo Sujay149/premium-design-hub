@@ -136,6 +136,8 @@ function ServicesPage() {
         </div>
       </section>
 
+      <Faqs />
+
       <section className="bg-background py-24 lg:py-32">
         <div className="container-editorial flex flex-col md:flex-row items-start md:items-end justify-between gap-10">
           <h2 className="font-serif text-4xl md:text-6xl leading-[1.05] max-w-2xl">
@@ -152,3 +154,54 @@ function ServicesPage() {
     </SiteShell>
   );
 }
+
+const faqs = [
+  {
+    q: "Where does Jaffa Group build?",
+    a: "Park City and the surrounding Wasatch Back communities — Deer Valley, Promontory, Park Meadows, Tuhaye, Victory Ranch, Old Town, and Summit Park.",
+  },
+  {
+    q: "Do you take projects with an existing architect?",
+    a: "Yes. We work as design-build or as the construction partner alongside an outside architect or interior designer. Our process is built to integrate either way.",
+  },
+  {
+    q: "What's a typical project budget?",
+    a: "Most of our custom homes fall between $5M and $25M+ in total project cost. Renovations begin around $750K. We're happy to discuss budgets honestly during discovery.",
+  },
+  {
+    q: "How long does a custom home take?",
+    a: "From first conversation to handover, plan on 24–36 months for a ground-up custom home. Renovations vary widely by scope.",
+  },
+  {
+    q: "How many projects do you take on at once?",
+    a: "We deliberately keep a small active book — typically four to six concurrent projects — so that senior attention is on every site, every week.",
+  },
+];
+
+function Faqs() {
+  return (
+    <section className="bg-mist py-24 lg:py-36">
+      <div className="container-editorial grid gap-16 lg:grid-cols-12">
+        <div className="lg:col-span-4">
+          <p className="eyebrow">FAQs</p>
+          <h2 className="mt-6 font-serif text-4xl md:text-5xl leading-[1.05]">
+            Common <span className="italic text-gold">questions.</span>
+          </h2>
+        </div>
+        <div className="lg:col-span-7 lg:col-start-6">
+          <dl className="divide-y divide-foreground/15 border-t border-foreground/15">
+            {faqs.map((f) => (
+              <div key={f.q} className="py-7">
+                <dt className="font-serif text-xl md:text-2xl">{f.q}</dt>
+                <dd className="mt-3 font-sans text-base leading-relaxed text-muted-foreground">
+                  {f.a}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
+    </section>
+  );
+}
+
