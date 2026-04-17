@@ -42,6 +42,16 @@ export const Route = createFileRoute("/portfolio/$slug")({
 function ProjectPage() {
   const { project } = Route.useLoaderData() as { project: Project };
   const related = projects.filter((p) => p.slug !== project.slug).slice(0, 3);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  const projectLd = {
+    "@context": "https://schema.org",
+    "@type": "Residence",
+    name: project.title,
+    description: project.blurb,
+    image: project.hero,
+    address: { "@type": "PostalAddress", addressLocality: project.location },
+  };
 
   return (
     <SiteShell>
