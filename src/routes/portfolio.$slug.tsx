@@ -1,6 +1,8 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useState } from "react";
+import { ArrowLeft, ArrowRight, Maximize2 } from "lucide-react";
 import { SiteShell } from "@/components/site/SiteShell";
+import { Lightbox } from "@/components/site/Lightbox";
 import { getProject, projects, type Project } from "@/lib/projects";
 
 export const Route = createFileRoute("/portfolio/$slug")({
